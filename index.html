@@ -17,7 +17,7 @@
 <section id="portfolio" class="screen"><img class="art" src="portfolio.jpg" alt="Snappy's portfolio"><div class="controls"><button class="btn" data-go="board">MISSION BOARD</button><button class="btn alt" data-go="title">HOME</button></div></section>
 <section id="board" class="screen"><img class="art" src="board.jpg" alt="Snappy mission board"><div class="controls"><button class="btn" data-go="next">NEXT MISSION</button><button class="btn alt" data-go="title">HOME</button></div></section>
 <section id="next" class="screen"><img class="art" src="next.jpg" alt="Snappy looking over Atlanta"><div class="panel"><b class="gold">MISSION 02</b><br>Coming next: Around the Block.</div><button class="btn" data-go="title">PLAY AGAIN</button></section>
-</main><script>
+<section id="lesson" class="screen"><div class="panel"><h2 id="lessonTitle" class="gold"></h2></div><div class="scene"><div class="window"></div><div class="sprite"><div class="head"></div><div class="locs"></div><div class="glasses"></div><div class="eye"></div><div class="shirt"></div><div class="pants"></div><div class="shoe"></div><div class="camera"></div></div></div><div id="lessonQ" class="dialog"></div><button id="answerBtn" class="btn"></button><div id="lessonResult" class="panel" style="display:none"></div><button id="lessonDone" class="btn alt" style="display:none">MISSION COMPLETE</button></section></main><script>
 const screens=[...document.querySelectorAll('.screen')], chosen=new Set();
 function show(id){screens.forEach(s=>s.classList.toggle('on',s.id===id));scrollTo(0,0)}
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));
