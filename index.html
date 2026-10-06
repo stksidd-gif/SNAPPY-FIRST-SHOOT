@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Snappy: First Shoot</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:#06111c;color:white;font-family:"Courier New",monospace}body{display:flex;justify-content:center}
+#game{width:min(100%,430px);padding:8px 8px 28px}.screen{display:none}.screen.on{display:block}
+.art{width:100%;display:block;image-rendering:pixelated;border:4px solid #02070b;outline:2px solid #22678e}
+.controls{display:grid;gap:8px;margin-top:10px}.btn{min-height:52px;border:4px solid #02070b;background:#f5c542;color:#071421;font:bold 16px "Courier New";box-shadow:inset 4px 4px #ffe77a,inset -4px -4px #a66d17}.btn.alt{background:#0e3858;color:white;box-shadow:inset 4px 4px #246b94,inset -4px -4px #061827}
+.panel{background:#0b2944;border:4px solid #02070b;outline:2px solid #22678e;padding:10px;margin-top:9px}.gold{color:#f5c542}.gear{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.gear button{min-height:55px;background:#0e3858;color:white;border:3px solid #02070b;font:bold 11px "Courier New"}.gear button.sel{outline:3px solid #f5c542}.stars{color:#f5c542;letter-spacing:3px}.flash{animation:f .28s}@keyframes f{50%{filter:brightness(2.8)}}
+</style></head><body><main id="game">
+<section id="title" class="screen on"><img class="art" src="title.jpg" alt="Snappy First Shoot pixel art title screen"><div class="controls"><button class="btn" data-go="mission">START GAME</button><button class="btn alt" data-go="board">MISSIONS</button></div></section>
+<section id="mission" class="screen"><img class="art" src="mission.jpg" alt="Mission 01 Bedroom Studio"><div class="controls"><button class="btn" data-go="gear">CONTINUE</button><button class="btn alt" data-go="title">BACK</button></div></section>
+<section id="gear" class="screen"><img class="art" src="gear.jpg" alt="Choose your gear"><div class="panel"><b class="gold">CHOOSE 3+</b><div class="gear"><button data-item="Lamp">LAMP</button><button data-item="Books">BOOKS</button><button data-item="Backdrop">BACKDROP</button><button data-item="Stars">STARS</button><button data-item="Plant">PLANT</button><button data-item="Chair">CHAIR</button></div><p id="picked">SELECTED: 0/3</p></div><button id="confirm" class="btn" disabled>CONFIRM SETUP</button></section>
+<section id="setup" class="screen"><img class="art" src="setup.jpg" alt="Snappy's finished bedroom photo setup"><div class="panel" id="setupText">Your selected gear is ready.</div><div class="controls"><button class="btn" data-go="camera">OPEN CAMERA</button><button class="btn alt" data-go="gear">CHANGE GEAR</button></div></section>
+<section id="camera" class="screen"><img id="camArt" class="art" src="camera.jpg" alt="Snappy camera viewfinder"><div class="controls"><button id="shoot" class="btn">TAKE PHOTO</button><button class="btn alt" data-go="setup">BACK</button></div></section>
+<section id="score" class="screen"><img class="art" src="score.jpg" alt="Shot saved and scored"><div id="scoreText" class="panel"></div><button class="btn" data-go="portfolio">ADD TO PORTFOLIO</button></section>
+<section id="portfolio" class="screen"><img class="art" src="portfolio.jpg" alt="Snappy's portfolio"><div class="controls"><button class="btn" data-go="board">MISSION BOARD</button><button class="btn alt" data-go="title">HOME</button></div></section>
+<section id="board" class="screen"><img class="art" src="board.jpg" alt="Snappy mission board"><div class="controls"><button class="btn" data-go="next">NEXT MISSION</button><button class="btn alt" data-go="title">HOME</button></div></section>
+<section id="next" class="screen"><img class="art" src="next.jpg" alt="Snappy looking over Atlanta"><div class="panel"><b class="gold">MISSION 02</b><br>Coming next: Around the Block.</div><button class="btn" data-go="title">PLAY AGAIN</button></section>
+</main><script>
+const screens=[...document.querySelectorAll('.screen')], chosen=new Set();
+function show(id){screens.forEach(s=>s.classList.toggle('on',s.id===id));scrollTo(0,0)}
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));
+document.querySelectorAll('[data-item]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.item;if(chosen.has(k)){chosen.delete(k);b.classList.remove('sel')}else{chosen.add(k);b.classList.add('sel')}document.getElementById('picked').textContent='SELECTED: '+chosen.size+'/3';document.getElementById('confirm').disabled=chosen.size<3}));
+document.getElementById('confirm').addEventListener('click',()=>{document.getElementById('setupText').textContent='GEAR: '+[...chosen].join(' · ');show('setup')});
+document.getElementById('shoot').addEventListener('click',()=>{let a=document.getElementById('camArt');a.classList.remove('flash');void a.offsetWidth;a.classList.add('flash');setTimeout(()=>{let n=chosen.size,light=chosen.has('Lamp')?5:3,creative=Math.min(5,2+n),stars=x=>'★'.repeat(x)+'☆'.repeat(5-x);document.getElementById('scoreText').innerHTML='<b>FRAMING</b> <span class="stars">'+stars(4)+'</span><br><b>LIGHTING</b> <span class="stars">'+stars(light)+'</span><br><b>CREATIVITY</b> <span class="stars">'+stars(creative)+'</span><br><br><b class="gold">RESOURCEFUL CREATOR!</b>';show('score')},300)});
+</script></body></html>
